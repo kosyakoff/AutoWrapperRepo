@@ -91,7 +91,97 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public ObservableCollection<FriendEmailWrapper> Emails { get; private set; }
+        public ChangeTrackingCollection<FriendEmailWrapper> Emails { get; private set; }
+
+        public string FirstNameOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<string>(nameof(FirstName));
+                }
+            }
+        }
+
+        public bool FirstNameIsChanged
+        {
+            get { return GetIsChanged(nameof(FirstName)); }
+        }
+
+        public string LastNameOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<string>(nameof(LastName));
+                }
+            }
+        }
+
+        public bool LastNameIsChanged
+        {
+            get { return GetIsChanged(nameof(LastName)); }
+        }
+
+        public DateTime? BirthDayOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<DateTime?>(nameof(BirthDay));
+                }
+            }
+        }
+
+        public bool BirthDayIsChanged
+        {
+            get { return GetIsChanged(nameof(BirthDay)); }
+        }
+
+        public int IdOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<int>(nameof(Id));
+                }
+            }
+        }
+
+        public bool IdIsChanged
+        {
+            get { return GetIsChanged(nameof(Id)); }
+        }
+
+        public int FriendGroupIdOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<int>(nameof(FriendGroupId));
+                }
+            }
+        }
+
+        public bool FriendGroupIdIsChanged
+        {
+            get { return GetIsChanged(nameof(FriendGroupId)); }
+        }
+
+        public bool IsDeveloperOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<bool>(nameof(IsDeveloper));
+                }
+            }
+        }
+
+        public bool IsDeveloperIsChanged
+        {
+            get { return GetIsChanged(nameof(IsDeveloper)); }
+        }
 
         #endregion
 
@@ -116,6 +206,7 @@ namespace FriendStorage.UI.Wrapper
             }
 
             Address = new AddressWrapper(model.Address);
+            RegisterComplex(Address);
         }
 
         private void InitializeCollectionProperties(Friend model)
@@ -126,7 +217,7 @@ namespace FriendStorage.UI.Wrapper
             }
 
             Emails = 
-                new ObservableCollection<FriendEmailWrapper>(model.Emails.Select(e => new FriendEmailWrapper(e)));
+                new ChangeTrackingCollection<FriendEmailWrapper>(model.Emails.Select(e => new FriendEmailWrapper(e)));
 
             RegisterCollection(Emails,model.Emails);
         }

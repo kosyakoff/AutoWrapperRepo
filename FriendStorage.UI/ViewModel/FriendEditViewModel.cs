@@ -36,7 +36,7 @@ namespace FriendStorage.UI.ViewModel
       public FriendWrapper Friend
       {
           get { return _friend; }
-          set
+          private set
           {
               _friend = value;
               OnPropertyChanged();
@@ -109,25 +109,32 @@ namespace FriendStorage.UI.ViewModel
                            : new Friend { Address = new Address(), Emails = new List<FriendEmail>() };
 
           Friend = new FriendWrapper(friend);
+          Friend.PropertyChanged += FriendPropertyChanged;
 
           InvalidateCommands();
       }
 
+        private void FriendPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
+        {
+            if (e.PropertyName == nameof(Friend.IsChanged))
+            {
+                InvalidateCommands();
+            }
+        }
+
       private bool OnSaveCanExecute(object arg)
       {
-          // TODO: Check for HasChanges
-          return true;
+          return Friend.IsChanged;
       }
 
       private void OnResetExecute(object obj)
       {
-
+          Friend.RejectChanges();
       }
 
       private bool OnResetCanExecute(object arg)
       {
-          // TODO: Check for HasChanges
-          return false;
+          return Friend.IsChanged;
       }
 
       private bool OnDeleteCanExecute(object arg)
@@ -144,7 +151,8 @@ namespace FriendStorage.UI.ViewModel
 
           if (result == MessageDialogResult.Yes)
           {
-              _friendDataProvider.DeleteFriend(Friend.Id);
+              Friend.PropertyChanged -= FriendPropertyChanged;
+                _friendDataProvider.DeleteFriend(Friend.Id);
               _eventAggregator.GetEvent<FriendDeletedEvent>().Publish(Friend.Id);
           }
       }
@@ -168,11 +176,12 @@ namespace FriendStorage.UI.ViewModel
       private void OnSaveExecute(object obj)
       {
           _friendDataProvider.SaveFriend(Friend.Model);
+          Friend.AcceptChanges();
           _eventAggregator.GetEvent<FriendSavedEvent>().Publish(Friend.Model);
           InvalidateCommands();
       }
 
-        private void InvalidateCommands()
+      private void InvalidateCommands()
       {
           ((DelegateCommand)SaveCommand).RaiseCanExecuteChanged();
           ((DelegateCommand)ResetCommand).RaiseCanExecuteChanged();

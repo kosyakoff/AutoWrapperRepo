@@ -27,6 +27,14 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public int IdOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<int>(nameof(Id));
+            }
+        }
+
         public string Email
         {
             get
@@ -39,6 +47,14 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public string EmailOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<string>(nameof(Email));
+            }
+        }
+
         public string Comment
         {
             get
@@ -48,6 +64,14 @@ namespace FriendStorage.UI.Wrapper
             set
             {
                 SetValue(value);
+            }
+        }
+
+        public string CommentOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<string>(nameof(Comment));
             }
         }
     }

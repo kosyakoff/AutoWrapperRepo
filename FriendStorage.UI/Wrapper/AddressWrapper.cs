@@ -28,6 +28,14 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public int IdOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<int>(nameof(Id));
+            }
+        }
+
         public string City
         {
             get
@@ -37,6 +45,14 @@ namespace FriendStorage.UI.Wrapper
             set
             {
                 SetValue(value);
+            }
+        }
+
+        public string CityOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<string>(nameof(City));
             }
         }
 
@@ -52,6 +68,14 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public string StreetOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<string>(nameof(Street));
+            }
+        }
+
         public string StreetNumber
         {
             get
@@ -61,6 +85,14 @@ namespace FriendStorage.UI.Wrapper
             set
             {
                 SetValue(value);
+            }
+        }
+
+        public string StreetNumberOriginalValue
+        {
+            get
+            {
+                return GetOriginalValue<string>(nameof(StreetNumber));
             }
         }
     }
