@@ -9,7 +9,9 @@ using System;
 
 namespace FriendStorage.UI.ViewModel
 {
-  public class MainViewModel : Observable
+    using System.ComponentModel;
+
+    public class MainViewModel : Observable
   {
     private readonly IEventAggregator _eventAggregator;
     private readonly IMessageDialogService _messageDialogService;
@@ -57,7 +59,20 @@ namespace FriendStorage.UI.ViewModel
       }
     }
 
-    private void OnAddFriendExecute(object obj)
+      public void OnClosing(CancelEventArgs cancelEventArgs)
+      {
+          if (FriendEditViewModels.Any(f => f.Friend.IsChanged))
+          {
+             MessageDialogResult result = _messageDialogService.ShowYesNoDialog(
+                  "Close Application?",
+                  "You'll lose your changes if you close this application. Close it?",
+                  MessageDialogResult.No);
+
+              cancelEventArgs.Cancel = result == MessageDialogResult.No;
+          }
+      }
+
+        private void OnAddFriendExecute(object obj)
     {
       IFriendEditViewModel friendEditVm = _friendEditViewModelCreator();
       FriendEditViewModels.Add(friendEditVm);

@@ -5,6 +5,7 @@
     xmlns:behaviours="clr-namespace:FriendStorage.UI.Behaviours"
     xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
     xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+    xmlns:controls="clr-namespace:FriendStorage.UI.Controls"
     d:DesignHeight="350"
     d:DesignWidth="700"
     Background="#333333"
@@ -18,6 +19,7 @@
             <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
             <RowDefinition Height="*" />
+            <RowDefinition Height="Auto" />
             <RowDefinition Height="Auto" />
         </Grid.RowDefinitions>
         <Grid.ColumnDefinitions>
@@ -124,6 +126,7 @@
             Grid.Row="6"
             Grid.Column="1"
             Grid.ColumnSpan="4"
+            behaviours:DataGridChangeBehavior.IsActive="True"
             Width="538"
             Margin="0,5"
             ItemsSource="{Binding Friend.Emails}"
@@ -139,9 +142,12 @@
                     Header="Comment" />
             </DataGrid.Columns>
         </DataGrid>
+        
+        <controls:ChangeTrackingCollectionInfo DataContext="{Binding Friend.Emails}"
+                                               Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4"/>
 
         <StackPanel
-            Grid.Row="7"
+            Grid.Row="8"
             Grid.ColumnSpan="4"
             HorizontalAlignment="Left"
             VerticalAlignment="Bottom"

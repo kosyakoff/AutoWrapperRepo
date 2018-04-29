@@ -47,6 +47,11 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public bool EmailIsChanged
+        {
+            get { return GetIsChanged(nameof(Email)); }
+        }
+
         public string EmailOriginalValue
         {
             get
@@ -65,6 +70,11 @@ namespace FriendStorage.UI.Wrapper
             {
                 SetValue(value);
             }
+        }
+
+        public bool CommentIsChanged
+        {
+            get { return GetIsChanged(nameof(Comment)); }
         }
 
         public string CommentOriginalValue

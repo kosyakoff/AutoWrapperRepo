@@ -1,14 +1,42 @@
-﻿using System.Windows;
-using FriendStorage.UI.ViewModel;
+﻿// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// Copyright ElcomPlus LLC. All rights reserved.
+// Author: 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 namespace FriendStorage.UI.View
 {
-  public partial class MainWindow : Window
-  {
-    public MainWindow(MainViewModel viewModel)
+    using System.ComponentModel;
+    using System.Windows;
+
+    using ViewModel;
+
+    public partial class MainWindow : Window
     {
-      InitializeComponent();
-      DataContext = viewModel;
+        #region Fields
+
+        private MainViewModel _viewModel;
+
+        #endregion
+
+        #region Constructors
+
+        public MainWindow(MainViewModel viewModel)
+        {
+            InitializeComponent();
+            _viewModel = viewModel;
+            DataContext = viewModel;
+        }
+
+        #endregion
+
+        #region Methods
+
+        protected override void OnClosing(CancelEventArgs e)
+        {
+            base.OnClosing(e);
+            _viewModel.OnClosing(e);
+        }
+
+        #endregion
     }
-  }
 }
