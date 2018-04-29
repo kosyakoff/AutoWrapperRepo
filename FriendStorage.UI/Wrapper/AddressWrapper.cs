@@ -48,7 +48,12 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public string CityOriginalValue
+        public bool CityIsChanged
+        {
+            get { return GetIsChanged(nameof(City)); }
+        }
+
+        public string CityOriginalProperty
         {
             get
             {
@@ -68,7 +73,12 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public string StreetOriginalValue
+        public bool StreetIsChanged
+        {
+            get { return GetIsChanged(nameof(Street)); }
+        }
+
+        public string StreetOriginalProperty
         {
             get
             {
@@ -88,7 +98,12 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public string StreetNumberOriginalValue
+        public bool StreetNumberIsChanged
+        {
+            get { return GetIsChanged(nameof(StreetNumber)); }
+        }
+
+        public string StreetNumberOriginalProperty
         {
             get
             {

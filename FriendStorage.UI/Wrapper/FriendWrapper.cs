@@ -43,7 +43,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public DateTime? BirthDay
+        public DateTime? Birthday
         {
             get
             {
@@ -123,19 +123,19 @@ namespace FriendStorage.UI.Wrapper
             get { return GetIsChanged(nameof(LastName)); }
         }
 
-        public DateTime? BirthDayOriginalProperty
+        public DateTime? BirthdayOriginalProperty
         {
             get
             {
                 {
-                    return GetOriginalValue<DateTime?>(nameof(BirthDay));
+                    return GetOriginalValue<DateTime?>(nameof(Birthday));
                 }
             }
         }
 
-        public bool BirthDayIsChanged
+        public bool BirthdayIsChanged
         {
-            get { return GetIsChanged(nameof(BirthDay)); }
+            get { return GetIsChanged(nameof(Birthday)); }
         }
 
         public int IdOriginalProperty
