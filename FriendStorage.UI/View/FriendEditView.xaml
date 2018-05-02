@@ -64,6 +64,7 @@
         <CheckBox
             Grid.Row="4"
             Grid.Column="1"
+            HorizontalAlignment="Left"
             VerticalAlignment="Center"
             IsChecked="{Binding Friend.IsDeveloper, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}" />
 
@@ -143,7 +144,7 @@
             </DataGrid.Columns>
         </DataGrid>
         
-        <controls:ChangeTrackingCollectionInfo DataContext="{Binding Friend.Emails}"
+        <controls:ChangeTrackingCollectionInfo DataContext="{Binding Friend.Emails, ValidatesOnNotifyDataErrors=False}"
                                                Grid.Row="7" Grid.Column="1" Grid.ColumnSpan="4"/>
 
         <StackPanel
