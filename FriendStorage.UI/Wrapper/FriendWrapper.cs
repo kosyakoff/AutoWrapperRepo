@@ -20,7 +20,6 @@ namespace FriendStorage.UI.Wrapper
 
         public AddressWrapper Address { get; private set; }
 
-        [Required(ErrorMessage = "Firstname is required")]
         public string FirstName
         {
             get
@@ -192,15 +191,27 @@ namespace FriendStorage.UI.Wrapper
         public FriendWrapper(Friend model)
             : base(model)
         {
-            InitializeComplexProperties(model);
-            InitializeCollectionProperties(model);
         }
 
         #endregion
 
         #region Methods
 
-        private void InitializeComplexProperties(Friend model)
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(FirstName))
+            {
+                yield return new ValidationResult("Firstname is required", 
+                    new[] { nameof(FirstName) });
+            }
+            if (IsDeveloper && !Emails.Any())
+            {
+                yield return new ValidationResult("A developer must have an email address",
+                    new [] {nameof(IsDeveloper), nameof(Emails)});
+            }
+        }
+
+        protected override void InitializeComplexProperties(Friend model)
         {
             if (model.Address == null)
             {
@@ -211,7 +222,7 @@ namespace FriendStorage.UI.Wrapper
             RegisterComplex(Address);
         }
 
-        private void InitializeCollectionProperties(Friend model)
+        protected override void InitializeCollectionProperties(Friend model)
         {
             if (model.Emails == null)
             {

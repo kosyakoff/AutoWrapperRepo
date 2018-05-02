@@ -15,7 +15,7 @@ namespace FriendStorage.UI.Wrapper
 
     using ViewModel;
 
-    public class ModelWrapper<T> : NotifyDataErrorInfoBase, IValidatableTrackingObject
+    public class ModelWrapper<T> : NotifyDataErrorInfoBase, IValidatableTrackingObject, IValidatableObject
         where T : class
     {
         private Dictionary<string, object> _originalValues;
@@ -40,7 +40,8 @@ namespace FriendStorage.UI.Wrapper
             Model = model;
             _originalValues = new Dictionary<string, object>();
             _trackingObjects = new List<IValidatableTrackingObject>();
-
+            InitializeComplexProperties(model);
+            InitializeCollectionProperties(model);
             Validate();
         }
 
@@ -89,6 +90,19 @@ namespace FriendStorage.UI.Wrapper
             OnPropertyChanged("");
         }
 
+        public virtual IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            yield break;
+        }
+
+        protected virtual void InitializeComplexProperties(T model)
+        {
+        }
+
+        protected virtual void InitializeCollectionProperties(T model)
+        {
+        }
+
         protected TValue GetValue<TValue>([CallerMemberName] string propertyrName = null)
         {
             var propertyInfo = Model.GetType().GetProperty(propertyrName);
@@ -114,6 +128,7 @@ namespace FriendStorage.UI.Wrapper
             {
                 modelCollection.Clear();
                 modelCollection.AddRange(wrapperCollection.Select(w => w.Model));
+                Validate();
             };
 
             RegisterTrackingObject(wrapperCollection);
