@@ -1,19 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// Copyright ElcomPlus LLC. All rights reserved.
+// Author: 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 namespace FriendStorage.UI.Wrapper
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Model;
 
     public class FriendEmailWrapper : ModelWrapper<FriendEmail>
     {
+        #region Constructors
+
         public FriendEmailWrapper(FriendEmail model)
             : base(model)
         {
         }
+
+        #endregion
 
         public int Id
         {
@@ -35,6 +40,8 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        [Required(ErrorMessage = "Email is required")]
+        [EmailAddress(ErrorMessage = "Email is not valid email addresss")]
         public string Email
         {
             get
@@ -49,7 +56,10 @@ namespace FriendStorage.UI.Wrapper
 
         public bool EmailIsChanged
         {
-            get { return GetIsChanged(nameof(Email)); }
+            get
+            {
+                return GetIsChanged(nameof(Email));
+            }
         }
 
         public string EmailOriginalValue
@@ -74,7 +84,10 @@ namespace FriendStorage.UI.Wrapper
 
         public bool CommentIsChanged
         {
-            get { return GetIsChanged(nameof(Comment)); }
+            get
+            {
+                return GetIsChanged(nameof(Comment));
+            }
         }
 
         public string CommentOriginalValue

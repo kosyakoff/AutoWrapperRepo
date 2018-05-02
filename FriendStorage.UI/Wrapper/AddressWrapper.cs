@@ -1,20 +1,24 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿// ---------------------------------------------------------------------------------------------------------------------------------------------------
+// Copyright ElcomPlus LLC. All rights reserved.
+// Author: 
+// ---------------------------------------------------------------------------------------------------------------------------------------------------
 
 namespace FriendStorage.UI.Wrapper
 {
+    using System.ComponentModel.DataAnnotations;
+
     using Model;
 
     public class AddressWrapper : ModelWrapper<Address>
     {
+        #region Constructors
+
         public AddressWrapper(Address model)
             : base(model)
         {
-            
         }
+
+        #endregion
 
         public int Id
         {
@@ -36,6 +40,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        [Required(ErrorMessage = "City is required")]
         public string City
         {
             get
@@ -50,7 +55,10 @@ namespace FriendStorage.UI.Wrapper
 
         public bool CityIsChanged
         {
-            get { return GetIsChanged(nameof(City)); }
+            get
+            {
+                return GetIsChanged(nameof(City));
+            }
         }
 
         public string CityOriginalProperty
@@ -75,7 +83,10 @@ namespace FriendStorage.UI.Wrapper
 
         public bool StreetIsChanged
         {
-            get { return GetIsChanged(nameof(Street)); }
+            get
+            {
+                return GetIsChanged(nameof(Street));
+            }
         }
 
         public string StreetOriginalProperty
@@ -100,7 +111,10 @@ namespace FriendStorage.UI.Wrapper
 
         public bool StreetNumberIsChanged
         {
-            get { return GetIsChanged(nameof(StreetNumber)); }
+            get
+            {
+                return GetIsChanged(nameof(StreetNumber));
+            }
         }
 
         public string StreetNumberOriginalProperty

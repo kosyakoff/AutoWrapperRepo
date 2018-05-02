@@ -6,8 +6,8 @@ using System.Linq;
 
 namespace FriendStorage.UI.Wrapper
 {
-    public class ChangeTrackingCollection<T> : ObservableCollection<T>, IRevertibleChangeTracking
-      where T : class, IRevertibleChangeTracking, INotifyPropertyChanged
+    public class ChangeTrackingCollection<T> : ObservableCollection<T>, IValidatableTrackingObject
+      where T : class, IValidatableTrackingObject
     {
         private IList<T> _originalCollection;
 
@@ -34,6 +34,14 @@ namespace FriendStorage.UI.Wrapper
         public ReadOnlyObservableCollection<T> AddedItems { get; private set; }
         public ReadOnlyObservableCollection<T> RemovedItems { get; private set; }
         public ReadOnlyObservableCollection<T> ModifiedItems { get; private set; }
+
+        public bool IsValid
+        {
+            get
+            {
+                return this.All(t => t.IsValid);
+            }
+        }
 
         public bool IsChanged
         {
@@ -91,10 +99,17 @@ namespace FriendStorage.UI.Wrapper
 
             base.OnCollectionChanged(e);
             OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsChanged)));
+            OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsValid)));
         }
 
         private void ItemPropertyChanged(object sender, PropertyChangedEventArgs e)
         {
+            if (e.PropertyName == nameof(IsValid))
+            {
+                OnPropertyChanged(new PropertyChangedEventArgs(nameof(IsValid)));
+                return;
+            }
+
             var item = (T)sender;
             if (_addedItems.Contains(item))
             {

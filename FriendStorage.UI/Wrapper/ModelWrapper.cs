@@ -15,12 +15,12 @@ namespace FriendStorage.UI.Wrapper
 
     using ViewModel;
 
-    public class ModelWrapper<T> : NotifyDataErrorInfoBase, IRevertibleChangeTracking
+    public class ModelWrapper<T> : NotifyDataErrorInfoBase, IValidatableTrackingObject
         where T : class
     {
         private Dictionary<string, object> _originalValues;
 
-        private List<IRevertibleChangeTracking> _trackingObjects;
+        private List<IValidatableTrackingObject> _trackingObjects;
 
         #region Properties
 
@@ -39,7 +39,7 @@ namespace FriendStorage.UI.Wrapper
 
             Model = model;
             _originalValues = new Dictionary<string, object>();
-            _trackingObjects = new List<IRevertibleChangeTracking>();
+            _trackingObjects = new List<IValidatableTrackingObject>();
 
             Validate();
         }
@@ -53,7 +53,7 @@ namespace FriendStorage.UI.Wrapper
         {
             get
             {
-                return !HasErrors;
+                return !HasErrors && _trackingObjects.All(t => t.IsValid);
             }
         }
 
@@ -139,8 +139,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        private void RegisterTrackingObject<TTrackingObject>(TTrackingObject trackingObject)
-        where TTrackingObject : IRevertibleChangeTracking, INotifyPropertyChanged
+        private void RegisterTrackingObject(IValidatableTrackingObject trackingObject)
         {
             if (!_trackingObjects.Contains(trackingObject))
             {
@@ -180,6 +179,10 @@ namespace FriendStorage.UI.Wrapper
             if (e.PropertyName == nameof(IsChanged))
             {
                 OnPropertyChanged(nameof(IsChanged));
+            }
+            else if (e.PropertyName == nameof(IsValid))
+            {
+                OnPropertyChanged(nameof(IsValid));
             }
         }
 
