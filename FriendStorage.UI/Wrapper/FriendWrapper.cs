@@ -8,6 +8,7 @@ namespace FriendStorage.UI.Wrapper
     using System;
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Windows.Documents;
 
@@ -19,6 +20,7 @@ namespace FriendStorage.UI.Wrapper
 
         public AddressWrapper Address { get; private set; }
 
+        [Required(ErrorMessage = "Firstname is required")]
         public string FirstName
         {
             get

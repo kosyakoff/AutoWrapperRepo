@@ -9,12 +9,13 @@ namespace FriendStorage.UI.Wrapper
     using System.Collections.Generic;
     using System.Collections.ObjectModel;
     using System.ComponentModel;
+    using System.ComponentModel.DataAnnotations;
     using System.Linq;
     using System.Runtime.CompilerServices;
 
     using ViewModel;
 
-    public class ModelWrapper<T> : Observable, IRevertibleChangeTracking
+    public class ModelWrapper<T> : NotifyDataErrorInfoBase, IRevertibleChangeTracking
         where T : class
     {
         private Dictionary<string, object> _originalValues;
@@ -39,11 +40,21 @@ namespace FriendStorage.UI.Wrapper
             Model = model;
             _originalValues = new Dictionary<string, object>();
             _trackingObjects = new List<IRevertibleChangeTracking>();
+
+            Validate();
         }
 
         public bool IsChanged
         {
             get { return _originalValues.Count > 0 || _trackingObjects.Any(t => t.IsChanged); }
+        }
+
+        public bool IsValid
+        {
+            get
+            {
+                return !HasErrors;
+            }
         }
 
         #endregion
@@ -74,6 +85,7 @@ namespace FriendStorage.UI.Wrapper
                 trackingObject.RejectChanges();
             }
 
+            Validate();
             OnPropertyChanged("");
         }
 
@@ -112,6 +124,21 @@ namespace FriendStorage.UI.Wrapper
             RegisterTrackingObject(wrapper);
         }
 
+        protected void SetValue<TValue>(TValue newValue, [CallerMemberName] string propertyName = null)
+        {
+            var propertyInfo = Model.GetType().GetProperty(propertyName);
+            var currentValue = propertyInfo.GetValue(Model);
+
+            if (!Equals(currentValue, newValue))
+            {
+                UpdateOriginalValue(currentValue, newValue, propertyName);
+                propertyInfo.SetValue(Model, newValue);
+                Validate();
+                OnPropertyChanged(propertyName);
+                OnPropertyChanged(propertyName + "IsChanged");
+            }
+        }
+
         private void RegisterTrackingObject<TTrackingObject>(TTrackingObject trackingObject)
         where TTrackingObject : IRevertibleChangeTracking, INotifyPropertyChanged
         {
@@ -122,18 +149,30 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        protected void SetValue<TValue>(TValue newValue, [CallerMemberName] string propertyName = null)
+        private void Validate()
         {
-            var propertyInfo = Model.GetType().GetProperty(propertyName);
-            var currentValue = propertyInfo.GetValue(Model);
+            ClearErrors();
 
-            if (!Equals(currentValue, newValue))
+            var results = new List<ValidationResult>();
+            var context = new ValidationContext(this);
+
+            Validator.TryValidateObject(this, context, results, true);
+
+            if (results.Any())
             {
-                UpdateOriginalValue(currentValue, newValue, propertyName);
-                propertyInfo.SetValue(Model, newValue);
-                OnPropertyChanged(propertyName);
-                OnPropertyChanged(propertyName + "IsChanged");
+                var propertyNames = results.SelectMany(x => x.MemberNames).Distinct().ToList();
+
+                foreach (string propertyName in propertyNames)
+                {
+                    Errors[propertyName] = results.
+                        Where(r => r.MemberNames.Contains(propertyName)).
+                        Select(r => r.ErrorMessage).
+                        Distinct().
+                        ToList();
+                    OnErrorsChanged(propertyName);
+                }
             }
+            OnPropertyChanged(nameof(IsValid));
         }
 
         private void TrackingObjectPropertyChanged(object sender, PropertyChangedEventArgs e)

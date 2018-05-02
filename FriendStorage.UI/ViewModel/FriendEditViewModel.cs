@@ -116,7 +116,8 @@ namespace FriendStorage.UI.ViewModel
 
         private void FriendPropertyChanged(object sender, System.ComponentModel.PropertyChangedEventArgs e)
         {
-            if (e.PropertyName == nameof(Friend.IsChanged))
+            if (e.PropertyName == nameof(Friend.IsChanged) ||
+                e.PropertyName == nameof(Friend.IsValid))
             {
                 InvalidateCommands();
             }
@@ -124,7 +125,7 @@ namespace FriendStorage.UI.ViewModel
 
       private bool OnSaveCanExecute(object arg)
       {
-          return Friend.IsChanged;
+          return Friend.IsChanged && Friend.IsValid;
       }
 
       private void OnResetExecute(object obj)
