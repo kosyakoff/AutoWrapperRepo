@@ -173,7 +173,9 @@ namespace FriendStorage.UI.Wrapper
             get { return GetIsChanged(nameof(LastName)); }
         }
 
-
+ 
+		public AddressWrapper Address { get; private set; }
+	
 	}
 
 }
