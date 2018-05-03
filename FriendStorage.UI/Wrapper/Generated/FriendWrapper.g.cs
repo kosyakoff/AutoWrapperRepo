@@ -175,6 +175,8 @@ namespace FriendStorage.UI.Wrapper
 
  
 		public AddressWrapper Address { get; private set; }
+	 
+	public ChangeTrackingCollection<FriendEmailWrapper> Emails { get; private set; }
 	
 	}
 

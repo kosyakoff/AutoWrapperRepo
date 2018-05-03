@@ -15,10 +15,16 @@
     {
 		var simpleProperties = modelType.GetProperties().
 								Where(p => p.PropertyType.IsValueType || p.PropertyType == typeof(string)).ToList();
-		var complexProperties = modelType.GetProperties().
-								Except(simpleProperties)
+		
+		var complexProperties = modelType.GetProperties()
+								.Except(simpleProperties)
 								.Where(p => p.PropertyType.IsClass 
 								 && !typeof(IEnumerable).IsAssignableFrom(p.PropertyType)).ToList();
+
+		var collectionProperties = modelType.GetProperties()
+	      .Except(simpleProperties)
+		  .Except(complexProperties)
+	      .Where(p=>p.PropertyType.IsGenericType).ToList();
 
 #>		
 
@@ -36,6 +42,7 @@ namespace FriendStorage.UI.Wrapper
 <#
 	GenerateSimpleProperties(simpleProperties);
 	GenerateComplexProperties(complexProperties);
+	GenerateCollectionProperties(collectionProperties);
 #>
 
 	}
@@ -113,6 +120,19 @@ private void GenerateComplexProperties(IEnumerable<PropertyInfo> properties)
  
 		public <#= propertyType #>Wrapper <#= propertyName #> { get; private set; }
 	<#+   
+	}
+}
+
+private void GenerateCollectionProperties(IEnumerable<PropertyInfo> properties)
+{
+	foreach (var property in properties)
+	{
+		var itemType = property.PropertyType.GenericTypeArguments[0].Name;
+		var propertyName= property.Name;
+	#>
+ 
+	public ChangeTrackingCollection<<#= itemType #>Wrapper> <#= propertyName #> { get; private set; }
+	<#+  
 	}
 }
 
