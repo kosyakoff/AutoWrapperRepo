@@ -32,6 +32,21 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
+        public string FirstNameOriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<string>(nameof(FirstName));
+                }
+            }
+        }
+
+        public bool FirstNameIsChanged
+        {
+            get { return GetIsChanged(nameof(FirstName)); }
+        }
+
         public string LastName
         {
             get
@@ -93,21 +108,6 @@ namespace FriendStorage.UI.Wrapper
         }
 
         public ChangeTrackingCollection<FriendEmailWrapper> Emails { get; private set; }
-
-        public string FirstNameOriginalProperty
-        {
-            get
-            {
-                {
-                    return GetOriginalValue<string>(nameof(FirstName));
-                }
-            }
-        }
-
-        public bool FirstNameIsChanged
-        {
-            get { return GetIsChanged(nameof(FirstName)); }
-        }
 
         public string LastNameOriginalProperty
         {

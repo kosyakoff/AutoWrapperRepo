@@ -4,6 +4,7 @@
 <#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Reflection" #>
 <#@ import namespace="System.Collections.Generic" #>
 <#@ import namespace="FriendStorage.Model" #>
 <#@ output extension=".cs" #>
@@ -11,22 +12,30 @@
 <# 
     foreach (var modelType in GetModelTypes())
     {
+		var simpleProperties = modelType.GetProperties().
+								Where(p => p.PropertyType.IsValueType || p.PropertyType == typeof(string)).ToList();
+
+
 #>		
 
-		using FriendStorage.Model;
+using FriendStorage.Model;
 
-		namespace FriendStorage.UI.Wrapper
+namespace FriendStorage.UI.Wrapper
+{
+
+	public class <#=modelType.Name#>Wrapper : ModelWrapper<<#=modelType.Name#>>
+	{
+		public <#=modelType.Name#>Wrapper(<#=modelType.Name#> model) : base(model)
 		{
-
-			public class <#=modelType.Name#>Wrapper : ModelWrapper<<#=modelType.Name#>>
-			{
-				public <#=modelType.Name#>Wrapper(<#=modelType.Name#> model) : base(model)
-				{
-
-				}
-			}
-
 		}
+
+<#
+	GenerateSimpleProperties(simpleProperties);
+#>
+
+	}
+
+}
 
 <# 
 		SaveGeneratedCodeAsFile(modelType.Name + "Wrapper.g.cs");
@@ -48,6 +57,60 @@ private void SaveGeneratedCodeAsFile(string fileName)
 	File.WriteAllText(outputFilePath, GenerationEnvironment.ToString());
 
 	GenerationEnvironment.Clear();
+}
+
+private void GenerateSimpleProperties(IEnumerable<PropertyInfo> properties)
+{
+	foreach (var property in properties)
+	{
+		var propertyType = GetTypeName(property.PropertyType);
+		var propertyName = property.Name;
+#>
+		public <#=propertyType#> <#=propertyName#>
+        {
+            get
+            {
+                return GetValue<<#=propertyType#>>();
+            }
+            set
+            {
+                SetValue(value);
+            }
+        }
+
+        public <#=propertyType#> <#=propertyName#>OriginalProperty
+        {
+            get
+            {
+                {
+                    return GetOriginalValue<<#=propertyType#>>(nameof(<#=propertyName#>));
+                }
+            }
+        }
+
+        public bool <#=propertyName#>IsChanged
+        {
+            get { return GetIsChanged(nameof(<#=propertyName#>)); }
+        }
+
+<#+
+
+	}
+}
+
+private string GetTypeName(Type type)
+{
+	if (type.IsGenericType)
+	{
+		var genericArguments = type.GetGenericArguments().Select(t => GetTypeName(t)).ToArray();
+		var typeDefinition = type.GetGenericTypeDefinition().FullName;
+		typeDefinition = typeDefinition.Substring(0, typeDefinition.IndexOf('`'));
+		return string.Format("{0}<{1}>", typeDefinition, string.Join(",", genericArguments));
+	}
+	else
+	{
+		return type.FullName;
+	}
 }
 
  #>
