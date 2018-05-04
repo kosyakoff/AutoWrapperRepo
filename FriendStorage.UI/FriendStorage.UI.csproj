@@ -103,9 +103,18 @@
     <Compile Include="Wrapper\Base\IValidatableTrackingObject.cs" />
     <Compile Include="Wrapper\Base\ModelWrapper.cs" />
     <Compile Include="Wrapper\Base\NotifyDataErrorInfoBase.cs" />
-    <Compile Include="Wrapper\OldWrappers\AddressWrapper.cs" />
-    <Compile Include="Wrapper\OldWrappers\FriendEmailWrapper.cs" />
-    <Compile Include="Wrapper\OldWrappers\FriendWrapper.cs" />
+    <Compile Include="Wrapper\Custom\AddressWrapper.cs" />
+    <Compile Include="Wrapper\Custom\FriendEmailWrapper.cs" />
+    <Compile Include="Wrapper\Custom\FriendWrapper.cs" />
+    <Compile Include="Wrapper\Generated\AddressWrapper.g.cs" />
+    <Compile Include="Wrapper\Generated\FriendEmailWrapper.g.cs" />
+    <Compile Include="Wrapper\Generated\FriendGroupWrapper.g.cs" />
+    <Compile Include="Wrapper\Generated\FriendWrapper.g.cs" />
+    <Compile Include="Wrapper\Generated\GenerateModelWrappers.cs">
+      <DependentUpon>GenerateModelWrappers.tt</DependentUpon>
+      <DesignTime>True</DesignTime>
+      <AutoGen>True</AutoGen>
+    </Compile>
     <Page Include="Controls\ChangeTrackingCollectionInfo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -226,6 +235,12 @@
   </ItemGroup>
   <ItemGroup>
     <Service Include="{508349B6-6B84-4DF5-91F0-309BEEBAD82D}" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Wrapper\Generated\GenerateModelWrappers.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <LastGenOutput>GenerateModelWrappers.cs</LastGenOutput>
+    </Content>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Target Name="EnsureNuGetPackageBuildImports" BeforeTargets="PrepareForBuild">
