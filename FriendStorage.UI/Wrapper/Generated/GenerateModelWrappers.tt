@@ -45,6 +45,7 @@ namespace FriendStorage.UI.Wrapper
 	GenerateComplexProperties(complexProperties);
 	GenerateCollectionProperties(collectionProperties);
 	GenerateInitializeComplexProperties(modelType.Name, complexProperties);
+	GenerateInitializeCollectionProperties(modelType.Name, collectionProperties);
 #>
 
 	}
@@ -92,7 +93,7 @@ private void GenerateSimpleProperties(IEnumerable<PropertyInfo> properties)
             }
         }
 
-        public <#=propertyType#> <#=propertyName#>OriginalProperty
+        public <#=propertyType#> <#=propertyName#>OriginalValue
         {
             get
             {
@@ -158,6 +159,37 @@ private void GenerateInitializeComplexProperties(string modelTypeName, IEnumerab
 		}
 		<#= propertyName #> = new <#= propertyType #>Wrapper(model.<#= propertyName #>);
 		RegisterComplex(<#= propertyName #>);
+<#+
+		}
+#>
+	}
+<#+
+	}
+}
+
+private void GenerateInitializeCollectionProperties(string modelTypeName, IEnumerable<System.Reflection.PropertyInfo> properties)
+{
+	if(properties.Any())
+	{
+#>
+
+	protected override void InitializeCollectionProperties(<#= modelTypeName#> model)
+	{
+<#+
+		foreach(var property in properties)
+		{
+		var itemType = property.PropertyType.GenericTypeArguments[0].Name;
+		var propertyName = property.Name;
+		   
+#>
+		if (model.<#= propertyName#> == null)
+		{
+			throw new ArgumentException("<#= propertyName#> cannot be null");
+		}
+ 
+		<#= propertyName #> = new ChangeTrackingCollection<<#= itemType #>Wrapper>(
+		model.<#= propertyName #>.Select(e => new <#= itemType #>Wrapper(e)));
+		RegisterCollection(<#= propertyName #>, model.<#= propertyName #>);
 <#+
 		}
 #>

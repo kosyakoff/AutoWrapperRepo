@@ -24,7 +24,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String CommentOriginalProperty
+        public System.String CommentOriginalValue
         {
             get
             {
@@ -51,7 +51,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String EmailOriginalProperty
+        public System.String EmailOriginalValue
         {
             get
             {
@@ -78,7 +78,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Int32 IdOriginalProperty
+        public System.Int32 IdOriginalValue
         {
             get
             {

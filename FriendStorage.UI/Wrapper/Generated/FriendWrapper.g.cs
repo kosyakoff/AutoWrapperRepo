@@ -24,7 +24,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Nullable<System.DateTime> BirthdayOriginalProperty
+        public System.Nullable<System.DateTime> BirthdayOriginalValue
         {
             get
             {
@@ -51,7 +51,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String FirstNameOriginalProperty
+        public System.String FirstNameOriginalValue
         {
             get
             {
@@ -78,7 +78,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Int32 FriendGroupIdOriginalProperty
+        public System.Int32 FriendGroupIdOriginalValue
         {
             get
             {
@@ -105,7 +105,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Int32 IdOriginalProperty
+        public System.Int32 IdOriginalValue
         {
             get
             {
@@ -132,7 +132,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Boolean IsDeveloperOriginalProperty
+        public System.Boolean IsDeveloperOriginalValue
         {
             get
             {
@@ -159,7 +159,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String LastNameOriginalProperty
+        public System.String LastNameOriginalValue
         {
             get
             {
@@ -187,6 +187,18 @@ namespace FriendStorage.UI.Wrapper
 		}
 		Address = new AddressWrapper(model.Address);
 		RegisterComplex(Address);
+	}
+
+	protected override void InitializeCollectionProperties(Friend model)
+	{
+		if (model.Emails == null)
+		{
+			throw new ArgumentException("Emails cannot be null");
+		}
+ 
+		Emails = new ChangeTrackingCollection<FriendEmailWrapper>(
+		model.Emails.Select(e => new FriendEmailWrapper(e)));
+		RegisterCollection(Emails, model.Emails);
 	}
 
 	}

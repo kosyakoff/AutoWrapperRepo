@@ -25,7 +25,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String CityOriginalProperty
+        public System.String CityOriginalValue
         {
             get
             {
@@ -52,7 +52,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Int32 IdOriginalProperty
+        public System.Int32 IdOriginalValue
         {
             get
             {
@@ -79,7 +79,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String StreetOriginalProperty
+        public System.String StreetOriginalValue
         {
             get
             {
@@ -106,7 +106,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String StreetNumberOriginalProperty
+        public System.String StreetNumberOriginalValue
         {
             get
             {

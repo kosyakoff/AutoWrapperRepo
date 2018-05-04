@@ -128,7 +128,7 @@ namespace FriendStorage.UI.Behaviours
                     {
                         string bindingPath = binding.Path.Path;
                         BindingOperations.SetBinding(d, IsChangedProperty, new Binding(bindingPath + "IsChanged"));
-                        CreatOriginalValueBinding(d, bindingPath + "OriginalProperty");
+                        CreatOriginalValueBinding(d, bindingPath + "OriginalValue");
                     }
                 }
                 else

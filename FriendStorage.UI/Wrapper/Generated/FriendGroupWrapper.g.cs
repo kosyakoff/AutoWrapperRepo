@@ -24,7 +24,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.Int32 IdOriginalProperty
+        public System.Int32 IdOriginalValue
         {
             get
             {
@@ -51,7 +51,7 @@ namespace FriendStorage.UI.Wrapper
             }
         }
 
-        public System.String NameOriginalProperty
+        public System.String NameOriginalValue
         {
             get
             {
