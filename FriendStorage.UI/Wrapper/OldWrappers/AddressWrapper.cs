@@ -8,6 +8,7 @@ namespace FriendStorage.UI.Wrapper
     using System.ComponentModel.DataAnnotations;
 
     using Model;
+    using System.Collections.Generic;
 
     public class AddressWrapper : ModelWrapper<Address>
     {
