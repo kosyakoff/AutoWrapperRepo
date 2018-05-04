@@ -27,7 +27,8 @@
 	      .Where(p=>p.PropertyType.IsGenericType).ToList();
 
 #>		
-
+using System;
+using System.Linq;
 using FriendStorage.Model;
 
 namespace FriendStorage.UI.Wrapper
@@ -43,6 +44,7 @@ namespace FriendStorage.UI.Wrapper
 	GenerateSimpleProperties(simpleProperties);
 	GenerateComplexProperties(complexProperties);
 	GenerateCollectionProperties(collectionProperties);
+	GenerateInitializeComplexProperties(modelType.Name, complexProperties);
 #>
 
 	}
@@ -133,6 +135,34 @@ private void GenerateCollectionProperties(IEnumerable<PropertyInfo> properties)
  
 	public ChangeTrackingCollection<<#= itemType #>Wrapper> <#= propertyName #> { get; private set; }
 	<#+  
+	}
+}
+
+private void GenerateInitializeComplexProperties(string modelTypeName, IEnumerable<PropertyInfo> properties)
+{
+	if(properties.Any())
+	{
+#>
+    
+	protected override void InitializeComplexProperties(<#= modelTypeName #> model)
+	{
+<#+
+		foreach (var complexProperty in properties)
+		{
+		var propertyName = complexProperty.Name;
+		var propertyType = complexProperty.PropertyType.Name;
+#>
+		if (model.<#= propertyName #> == null)
+		{
+		throw new ArgumentException("<#= propertyName #> cannot be null");
+		}
+		<#= propertyName #> = new <#= propertyType #>Wrapper(model.<#= propertyName #>);
+		RegisterComplex(<#= propertyName #>);
+<#+
+		}
+#>
+	}
+<#+
 	}
 }
 

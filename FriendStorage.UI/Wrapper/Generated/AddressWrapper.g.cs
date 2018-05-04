@@ -1,6 +1,7 @@
 
 		
-
+using System;
+using System.Linq;
 using FriendStorage.Model;
 
 namespace FriendStorage.UI.Wrapper

@@ -1,5 +1,6 @@
 		
-
+using System;
+using System.Linq;
 using FriendStorage.Model;
 
 namespace FriendStorage.UI.Wrapper
@@ -177,7 +178,17 @@ namespace FriendStorage.UI.Wrapper
 		public AddressWrapper Address { get; private set; }
 	 
 	public ChangeTrackingCollection<FriendEmailWrapper> Emails { get; private set; }
-	
+	    
+	protected override void InitializeComplexProperties(Friend model)
+	{
+		if (model.Address == null)
+		{
+		throw new ArgumentException("Address cannot be null");
+		}
+		Address = new AddressWrapper(model.Address);
+		RegisterComplex(Address);
+	}
+
 	}
 
 }
