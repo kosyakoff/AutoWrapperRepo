@@ -124,5 +124,14 @@ namespace FriendStorage.UI.Wrapper
                 return GetOriginalValue<string>(nameof(StreetNumber));
             }
         }
+
+        public override IEnumerable<ValidationResult> Validate(ValidationContext validationContext)
+        {
+            if (string.IsNullOrWhiteSpace(City))
+            {
+                yield return new ValidationResult("City is required",
+                    new[] { nameof(City) });
+            }
+        }
     }
 }

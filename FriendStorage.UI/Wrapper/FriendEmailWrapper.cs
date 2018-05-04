@@ -41,7 +41,7 @@ namespace FriendStorage.UI.Wrapper
         }
 
         [Required(ErrorMessage = "Email is required")]
-        [EmailAddress(ErrorMessage = "Email is not valid email addresss")]
+        [EmailAddress(ErrorMessage = "Email is not valid email address")]
         public string Email
         {
             get

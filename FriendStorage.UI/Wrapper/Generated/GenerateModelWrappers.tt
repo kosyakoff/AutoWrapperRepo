@@ -34,7 +34,7 @@ using FriendStorage.Model;
 namespace FriendStorage.UI.Wrapper
 {
 
-	public class <#=modelType.Name#>Wrapper : ModelWrapper<<#=modelType.Name#>>
+	public partial class <#=modelType.Name#>Wrapper : ModelWrapper<<#=modelType.Name#>>
 	{
 		public <#=modelType.Name#>Wrapper(<#=modelType.Name#> model) : base(model)
 		{
